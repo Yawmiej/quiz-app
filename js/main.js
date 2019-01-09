@@ -6,33 +6,33 @@ const quiz = [
     ["What is The Flash's real name", "Barry Allen"],
     ["What is Captain America's real name", "Steve Rogers"]
 ];
-function start(quiz){
+
+function start(quiz) {
     let score = 0;
 
-    // main game loop
-    for (const [question, answer] of quiz) {
-        const response = ask(question);
-        check(response,answer);
+    //Main quiz loop
+    for (let [question, answer] of quiz) {
+        let response = ask(question);
+        check(response, answer);
     }
 
-    gameOver();
+    gameover();
 
-    function ask(question) {
+    function ask(question){
         return prompt(question);
     }
 
-
     function check(response, answer) {
-        if(response.toLowerCase().trim() === answer.toLowerCase()) {
+        if (response.toLowerCase().trim() === answer.toLowerCase()){
             alert(`Correct!`);
             score++;
         } else {
-            alert(`Wrong, the correct answer was "${answer}"`);
+            alert(`Incorrect! the correct answer is ${answer}`);
         }
     }
 
-    function gameOver() {
-        alert(`Game over, You scored ${score} point${score !== 1 ? 's' : ''}`);
+    function gameover() {
+        alert(`Game Over dude!, You scored ${score} point${score === 1 ? '' : 's'}`)
     }
 }
 
