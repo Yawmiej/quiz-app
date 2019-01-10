@@ -1,39 +1,44 @@
 const quiz = [
-    ["What is Superman's real name?", "Clark Kent"],
-    ["What is Wonderwoman's real name?", "Diana Prince"],
-    ["What is Batman's real name?", "Bruce Wayne"],
-    ["What is Iron Man's real name?", "Tony Stark"],
-    ["What is The Flash's real name", "Barry Allen"],
-    ["What is Captain America's real name", "Steve Rogers"]
+    {name : "Superman", realName : "Clark Kent"},
+    {name: "Wonderwoman", realName: "Diana Prince"},
+    {name: "Batman", realName: "Bruce Wayne"},
+    {name: "Iron Man", realName: "Tony Stark"},
+    {name: "The Flash", realName: "Barry Allen"},
+    {name: "Captain America", realName: "Steve Rogers"}
 ];
 
-function start(quiz) {
-    let score = 0;
+const game = {
+    start(quiz) {
+        this.questions = [...quiz];
+        this.score = 0;
 
-    //Main quiz loop
-    for (let [question, answer] of quiz) {
-        let response = ask(question);
-        check(response, answer);
-    }
+        //Main quiz loop
+        for (const question of this.questions) {
+            this.question = question;
+            this.ask();
+        }
+        this.gameOver();
+    },
 
-    gameover();
+    ask(){
+        const question = `What is ${this.question.name}'s real name?`
+        const response = prompt(question);
+        this.check(response);
+    },
 
-    function ask(question){
-        return prompt(question);
-    }
-
-    function check(response, answer) {
+    check(response) {
+        const answer = this.question.realName;
         if (response.toLowerCase().trim() === answer.toLowerCase()){
             alert(`Correct!`);
-            score++;
+            this.score++;
         } else {
             alert(`Incorrect! the correct answer is ${answer}`);
         }
-    }
+    },
 
-    function gameover() {
-        alert(`Game Over dude!, You scored ${score} point${score === 1 ? '' : 's'}`)
+    gameOver() {
+        alert(`Game Over dude!, You scored ${this.score} point${this.score === 1 ? '' : 's'}`)
     }
 }
 
-start(quiz);
+game.start(quiz);
