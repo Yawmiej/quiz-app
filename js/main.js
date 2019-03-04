@@ -13,7 +13,13 @@ const view = {
         target.innerHTML = content;
     },
 
-    
+    show(element) {
+        element.classList.remove('hide');
+    },
+
+    hide (element) {
+        element.classList.add('hide');
+    }
 }
 
 const quiz = [
@@ -27,9 +33,12 @@ const quiz = [
 
 const game = {
     start(quiz) {
+        view.hide(view.start);
         this.questions = [...quiz];
         this.score = 0;
 
+        //Hide start button when game is ongoing
+        
         //Main quiz loop
         for (const question of this.questions) {
             this.question = question;
@@ -61,8 +70,10 @@ const game = {
     gameOver() {
         view.render(view.info, (`Game Over dude!, You scored ${this.score} point${this.score === 1 ? '' : 's'}`));
         alert(`Game Over dude!, You scored ${this.score} point${this.score === 1 ? '' : 's'}`)
+        view.show(view.start);
     }
 }
 
-
+view.start.addEventListener('click', () => {
     game.start(quiz);
+})
