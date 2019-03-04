@@ -1,3 +1,18 @@
+//View Object
+const view = {
+    score : document.querySelector('#score strong'),
+    question: document.querySelector('#question'),
+    result: document.querySelector('#result'),
+    info: document.querySelector('#info'),
+
+    render (target, content, attributes){
+        for (const key in attributes) {
+            target.setAttribute(key, attributes[key]);
+        }
+        target.innerHTML = content;
+    }
+}
+
 const quiz = [
     {name : "Superman", realName : "Clark Kent"},
     {name: "Wonderwoman", realName: "Diana Prince"},
