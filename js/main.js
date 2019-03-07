@@ -5,6 +5,7 @@ const view = {
     result: document.querySelector('#result'),
     info: document.querySelector('#info'),
     start: document.querySelector('#start'),
+    response: document.querySelector('#response'),
 
     render (target, content, attributes){
         for (const key in attributes) {
@@ -33,47 +34,46 @@ const quiz = [
 
 const game = {
     start(quiz) {
-        view.hide(view.start);
         this.questions = [...quiz];
         this.score = 0;
-
-        //Hide start button when game is ongoing
-        
-        //Main quiz loop
-        for (const question of this.questions) {
-            this.question = question;
-            this.ask();
-        }
-        this.gameOver();
+        this.ask();
     },
 
     ask(){
-        const question = `What is ${this.question.name}'s real name?`
-        view.render(view.question, question)
-        const response = prompt(question);
-        this.check(response);
+        if(this.questions.length > 0) {
+            this.question = this.questions.pop();
+            const question = `What is ${this.question.name}'s real name?`
+            view.render(view.question, question);
+        } else {
+            this.gameOver();
+        }
     },
 
-    check(response) {
+    check(event) {
+        event.preventDefault();
+        const response = view.response.answer.value;
         const answer = this.question.realName;
         if (response.toLowerCase().trim() === answer.toLowerCase()){
             view.render(result,"Correct", {'class':'correct'})
-            alert(`Correct!`);
             this.score++;
             view.render(view.score, this.score);
         } else {
-            view.render(result,`Wrong! The correct answer was ${answer}`, {'class':'wrong'})
-            alert(`Incorrect! the correct answer was ${answer}`);
+            view.render(result,`Wrong! The correct answer was ${answer}`, {'class':'wrong'});
         }
+        this.ask();
     },
 
     gameOver() {
         view.render(view.info, (`Game Over dude!, You scored ${this.score} point${this.score === 1 ? '' : 's'}`));
-        alert(`Game Over dude!, You scored ${this.score} point${this.score === 1 ? '' : 's'}`)
         view.show(view.start);
+        view.hide(view.response)
     }
 }
 
 view.start.addEventListener('click', () => {
     game.start(quiz);
-})
+});
+
+view.response.addEventListener('submit', (event)=> {
+    game.check(event);
+}, false);
